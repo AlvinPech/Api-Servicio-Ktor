@@ -79,9 +79,10 @@ class ReactivoRepository : ReactivoDao {
                 }.singleOrNull()
         }
 
-    override suspend fun deleteById(idProfesor: String): Int {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteById(idReactivo: String): Int =
+        DatabaseFactory.dbQuery {
+            ReactivoTable.deleteWhere { ReactivoTable.idreactivo.eq(idReactivo) }
+        }
 
     override suspend fun getRespuestasByReactivoId(idReactivo: String): List<Respuesta> =
         DatabaseFactory.dbQuery {
@@ -93,17 +94,6 @@ class ReactivoRepository : ReactivoDao {
                     rowToAnswer(it)
             }
         }
-
-
-
-    /*
-
-    override suspend fun deleteById(idAsignatura: String): Int =
-        DatabaseFactory.dbQuery {
-            AsignaturaTable.deleteWhere { AsignaturaTable.idAsignatura.eq(idAsignatura) }
-        }
-
-     */
 
     private fun rowToAsig(row:ResultRow?) : Reactivo? {
         if(row == null){ return null }

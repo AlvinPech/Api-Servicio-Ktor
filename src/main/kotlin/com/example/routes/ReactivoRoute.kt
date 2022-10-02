@@ -97,6 +97,26 @@ fun Route.reactivo(
         }
 
 
+        //Detele reactivos by id
+        delete("/{idReactivo}"){
+            val idReactivo = call.parameters["idReactivo"] ?: return@delete call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val result = db.deleteById(idReactivo)
+            try {
+                if (result == 1){
+                    call.respondText("$idReactivo deleted sucessfully...")
+                }else{
+                    call.respondText("$idReactivo not found...")
+                }
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
+
 
     }
 }

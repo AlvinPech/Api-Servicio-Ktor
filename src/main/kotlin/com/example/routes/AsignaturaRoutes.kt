@@ -87,7 +87,7 @@ fun Route.asignatura(
         }
 
 
-        //Detele units by id
+        //Detele asignaturas by id
         delete("/{idAsignatura}"){
             val idAsignatura = call.parameters["idAsignatura"] ?: return@delete call.respondText(
                 "NO ID",
