@@ -45,8 +45,49 @@ class ReactivoRepository : ReactivoDao {
         return rowToAsig(statement?.resultedValues?.get(0))
     }
 
+    override suspend fun getAllReactivos(): List<Reactivo> =
+        DatabaseFactory.dbQuery {
+            ReactivoTable.selectAll().mapNotNull {
+                rowToAsig(it)
+            }
+        }
 
-    override suspend fun getAllReactivos(): List<ReactivoResponse> =
+    override suspend fun getReactivosByUnidadTemaId(idUnidad: String, idTema: String): List<ReactivoResponse> =
+        DatabaseFactory.dbQuery {
+            TemasdereactivoTable.join(ReactivoTable, JoinType.INNER, additionalConstraint =
+            {TemasdereactivoTable.idreactivo eq ReactivoTable.idreactivo})
+                .join(UnidadTable, JoinType.INNER, additionalConstraint =
+                {TemasdereactivoTable.idunidad eq UnidadTable.idUnidad})
+                .join(TemaTable, JoinType.INNER, additionalConstraint =
+                {TemasdereactivoTable.idtema eq TemaTable.idTema})
+
+                .select{UnidadTable.idUnidad.eq(idUnidad) and(TemaTable.idTema.eq(idTema))}
+                .mapNotNull { reactivoRow ->
+                    runBlocking {
+                        rowToResponse(reactivoRow)
+                    }
+
+                }
+        }
+
+
+    override suspend fun getReactivosById(idReactivo: String): List<ReactivoResponse> =
+        DatabaseFactory.dbQuery {
+            TemasdereactivoTable.join(ReactivoTable, JoinType.INNER, additionalConstraint =
+            { TemasdereactivoTable.idreactivo eq ReactivoTable.idreactivo })
+                .join(UnidadTable, JoinType.INNER, additionalConstraint =
+                { TemasdereactivoTable.idunidad eq UnidadTable.idUnidad })
+                .join(TemaTable, JoinType.INNER, additionalConstraint =
+                { TemasdereactivoTable.idtema eq TemaTable.idTema })
+                .select { ReactivoTable.idreactivo.eq(idReactivo) }
+                .mapNotNull{
+                    runBlocking {
+                        rowToResponse(it)
+                    }
+                }
+        }
+
+    /*override suspend fun getAllReactivos(): List<ReactivoResponse> =
         DatabaseFactory.dbQuery {
             TemasdereactivoTable.join(ReactivoTable, JoinType.INNER, additionalConstraint =
             {TemasdereactivoTable.idreactivo eq ReactivoTable.idreactivo})
@@ -61,23 +102,8 @@ class ReactivoRepository : ReactivoDao {
                     }
 
                 }
-        }
+        }*/
 
-    override suspend fun getReactivosById(idReactivo: String): ReactivoResponse? =
-        DatabaseFactory.dbQuery {
-            TemasdereactivoTable.join(ReactivoTable, JoinType.INNER, additionalConstraint =
-            {TemasdereactivoTable.idreactivo eq ReactivoTable.idreactivo})
-                .join(UnidadTable, JoinType.INNER, additionalConstraint =
-                {TemasdereactivoTable.idunidad eq UnidadTable.idUnidad})
-                .join(TemaTable, JoinType.INNER, additionalConstraint =
-                {TemasdereactivoTable.idtema eq TemaTable.idTema})
-                .select { ReactivoTable.idreactivo.eq(idReactivo) }
-                .map {
-                    runBlocking {
-                        rowToResponse(it)
-                    }
-                }.singleOrNull()
-        }
 
     override suspend fun deleteById(idReactivo: String): Int =
         DatabaseFactory.dbQuery {
@@ -105,7 +131,7 @@ class ReactivoRepository : ReactivoDao {
         )
     }
 
-    private suspend fun rowToResponse(row:ResultRow?, ) : ReactivoResponse? {
+    private suspend fun rowToResponse(row:ResultRow?) : ReactivoResponse? {
         if(row == null){ return null }
 
         return ReactivoResponse(

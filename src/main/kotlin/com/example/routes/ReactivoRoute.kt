@@ -96,6 +96,17 @@ fun Route.reactivo(
             }
         }
 
+        get("/unidad/{idUnidad}/tema/{idTema}") {
+
+            val idReactivos = db.getReactivosByUnidadTemaId(call.parameters["idUnidad"]!!,call.parameters["idTema"]!! )
+            if (idReactivos == null) {
+                call.respond(HttpStatusCode.NotFound)
+
+            } else {
+                call.respond(idReactivos)
+            }
+        }
+
 
         //Detele reactivos by id
         delete("/{idReactivo}"){
