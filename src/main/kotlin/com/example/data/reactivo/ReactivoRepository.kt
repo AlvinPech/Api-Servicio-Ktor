@@ -121,6 +121,16 @@ class ReactivoRepository : ReactivoDao {
             }
         }
 
+    override suspend fun update(idReactivo: String, pregunta:String, dificultad: Int, requiereProcedimiento: Boolean, ): Int =
+            DatabaseFactory.dbQuery {
+                ReactivoTable.update({ ReactivoTable.idreactivo.eq(idReactivo) }) { reactivo ->
+                    reactivo[ReactivoTable.pregunta] = pregunta
+                    reactivo[ReactivoTable.dificultad] = dificultad
+                    reactivo[ReactivoTable.requiereProcedimiento] = requiereProcedimiento
+                }
+            }
+
+
     private fun rowToAsig(row:ResultRow?) : Reactivo? {
         if(row == null){ return null }
         return Reactivo(
