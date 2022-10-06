@@ -47,9 +47,16 @@ class ProfesorRepository: ProfesorDao{
             ProfesorTable.deleteWhere { ProfesorTable.idProfesor.eq(idProfesor) }
         }
 
-    override suspend fun update(idProfesor: String, correo: String, nombre: String, apellidoPaterno: String, apellidoMaterno: String, contrasenia: String): Int {
-        TODO("Not yet implemented")
-    }
+    override suspend fun update(idProfesor: String, correo: String, nombre: String, apellidoPaterno: String, apellidoMaterno: String, contrasenia: String): Int =
+        DatabaseFactory.dbQuery {
+            ProfesorTable.update({ProfesorTable.idProfesor.eq(idProfesor)}) { profesor ->
+                profesor[ProfesorTable.correo] = correo
+                profesor[ProfesorTable.nombre] = nombre
+                profesor[ProfesorTable.apellidoPaterno] = apellidoPaterno
+                profesor[ProfesorTable.apellidoMaterno] = apellidoMaterno
+                profesor[ProfesorTable.contrasenia] = contrasenia
+            }
+        }
 
     private fun rowToAsig(row: ResultRow?) : Profesor? {
         if(row == null){
