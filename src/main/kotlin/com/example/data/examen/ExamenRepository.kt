@@ -84,8 +84,14 @@ class ExamenRepository : ExamenDao {
             ExamenTable.deleteWhere { ExamenTable.idexamen.eq(idExamen) }
         }
 
-    override suspend fun update(): Int {
-        TODO("Not yet implemented")
+    override suspend fun update(idExamen: String, nombre: String, descripcion: String, idAsignatura: String, tiempo: Int): Int =
+        DatabaseFactory.dbQuery {
+            ExamenTable.update({ ExamenTable.idexamen.eq(idExamen) }) { exam ->
+                exam[ExamenTable.nombre] = nombre
+                exam[ExamenTable.descripcion] = descripcion
+                exam[ExamenTable.idasignatura] = idAsignatura
+                exam[ExamenTable.tiempo] = tiempo
+            }
     }
 
 

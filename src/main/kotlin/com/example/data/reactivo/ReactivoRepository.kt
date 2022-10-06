@@ -45,12 +45,12 @@ class ReactivoRepository : ReactivoDao {
         return rowToAsig(statement?.resultedValues?.get(0))
     }
 
-    override suspend fun getAllReactivos(): List<Reactivo> =
+    /*override suspend fun getAllReactivos(): List<Reactivo> =
         DatabaseFactory.dbQuery {
             ReactivoTable.selectAll().mapNotNull {
                 rowToAsig(it)
             }
-        }
+        }*/
 
     override suspend fun getReactivosByUnidadTemaId(idUnidad: String, idTema: String): List<ReactivoResponse> =
         DatabaseFactory.dbQuery {
@@ -87,7 +87,7 @@ class ReactivoRepository : ReactivoDao {
                 }
         }
 
-    /*override suspend fun getAllReactivos(): List<ReactivoResponse> =
+    override suspend fun getAllReactivos(): List<ReactivoResponse> =
         DatabaseFactory.dbQuery {
             TemasdereactivoTable.join(ReactivoTable, JoinType.INNER, additionalConstraint =
             {TemasdereactivoTable.idreactivo eq ReactivoTable.idreactivo})
@@ -102,7 +102,7 @@ class ReactivoRepository : ReactivoDao {
                     }
 
                 }
-        }*/
+        }
 
 
     override suspend fun deleteById(idReactivo: String): Int =

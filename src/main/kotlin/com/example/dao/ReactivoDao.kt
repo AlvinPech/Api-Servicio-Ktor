@@ -24,7 +24,7 @@ interface ReactivoDao {
         idUnidad: String
     ): Int*/
 
-    suspend fun getAllReactivos():List<Reactivo>?
+    suspend fun getAllReactivos():List<ReactivoResponse>?
 
     suspend fun getReactivosByUnidadTemaId(idUnidad: String, idTema: String): List<ReactivoResponse>?
 
