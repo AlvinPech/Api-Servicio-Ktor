@@ -2,8 +2,10 @@ package com.example.data.tema
 
 import com.example.dao.ResponseDao
 import com.example.repository.DatabaseFactory
+import com.example.repository.tables.RespuestaTable
 import com.example.repository.tables.TemaTable
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class responseRepository : ResponseDao {
@@ -53,9 +55,14 @@ class responseRepository : ResponseDao {
             TemaTable.deleteWhere { TemaTable.idUnidad.eq(idPK) }
         }
 
-    override suspend fun update(idPK: String, nombreReponse: String, descResponse: String, idFK: String): Int {
-        TODO("Not yet implemented")
-    }
+    override suspend fun update(idPK: String, nombreReponse: String, descResponse: String, idFK: String): Int =
+        DatabaseFactory.dbQuery {
+            TemaTable.update({ TemaTable.idTema.eq(idPK) }) { tema ->
+                tema[TemaTable.nombreTema] = nombreReponse
+                tema[TemaTable.descTema] = descResponse
+                tema[TemaTable.idUnidad] = idFK
+            }
+        }
 }
 
 
