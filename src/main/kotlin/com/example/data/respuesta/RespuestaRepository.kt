@@ -61,9 +61,14 @@ class RespuestaRepository : RespuestaDao {
             RespuestaTable.deleteWhere { RespuestaTable.idrespuesta.eq(idRespuesta) }
         }
 
-    override suspend fun update(idRespuesta: String, respuesta: String, esCorrecto: Boolean, idsigreactivo: String): Int {
-        TODO("Not yet implemented")
-    }
+    override suspend fun update(idRespuesta: String, respuestaString: String, esCorrecto: Boolean, idsigreactivo: String): Int =
+        DatabaseFactory.dbQuery {
+            RespuestaTable.update({ RespuestaTable.idrespuesta.eq(idRespuesta) }) { respuesta ->
+                respuesta[RespuestaTable.respuesta] = respuestaString
+                respuesta[RespuestaTable.esCorrecto] = esCorrecto
+                respuesta[RespuestaTable.idsigreactivo] = idsigreactivo
+            }
+        }
 
 
     private fun rowToAnswer(row:ResultRow?) : Respuesta? {
