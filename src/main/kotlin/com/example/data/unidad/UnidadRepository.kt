@@ -2,8 +2,10 @@ package com.example.data.unidad
 
 import com.example.dao.UnitDao
 import com.example.repository.DatabaseFactory
+import com.example.repository.tables.TemaTable
 import com.example.repository.tables.UnidadTable
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class UnidadRepository : UnitDao {
@@ -52,6 +54,15 @@ class UnidadRepository : UnitDao {
     override suspend fun deleteById(idUnidad: String): Int =
         DatabaseFactory.dbQuery {
             UnidadTable.deleteWhere { UnidadTable.idUnidad.eq(idUnidad) }
+        }
+
+    override suspend fun update(idUnidad: String, nombreUnidad: String, descUnidad: String, idAsignatura: String): Int =
+        DatabaseFactory.dbQuery {
+            UnidadTable.update({ UnidadTable.idUnidad.eq(idUnidad) }) { unidad ->
+                unidad[UnidadTable.nombreUnidad] = nombreUnidad
+                unidad[UnidadTable.descUnidad] = descUnidad
+                unidad[UnidadTable.idAsignatura] = idAsignatura
+            }
         }
 
 

@@ -103,5 +103,41 @@ fun Route.unidad(
                 call.respondText("${e.message}")
             }
         }
+
+
+        put("/{idUnidad}"){
+            val parameter = call.receive<Parameters>()
+
+            val idUnidad = call.parameters["idUnidad"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val nombreUnidad = parameter["nombreUnidad"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+            val descUnidad = parameter["descUnidad"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val idAsignatura = parameter["idAsignatura"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val result = db.update(idUnidad, nombreUnidad, descUnidad, idAsignatura)
+                if (result == 1){
+                    call.respondText("$idUnidad updated sucessfully...")
+                }else{
+                    call.respondText("$idUnidad not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
     }
 }
