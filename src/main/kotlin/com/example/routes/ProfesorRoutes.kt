@@ -102,5 +102,51 @@ fun Route.profesor(
                 call.respondText("${e.message}")
             }
         }
+
+
+        put("/{idProfesor}"){
+            val parameter = call.receive<Parameters>()
+
+            val idProfesor = call.parameters["idProfesor"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val correo = parameter["correo"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+            val nombre = parameter["nombre"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val apellidoPaterno = parameter["apellidoPaterno"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val apellidoMaterno = parameter["apellidoMaterno"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val contrasenia = parameter["contrasenia"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val asig = db.update(idProfesor, correo, nombre, apellidoPaterno, apellidoMaterno, contrasenia)
+                if (asig == 1){
+                    call.respondText("$idProfesor updated sucessfully...")
+                }else{
+                    call.respondText("$idProfesor not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
     }
 }

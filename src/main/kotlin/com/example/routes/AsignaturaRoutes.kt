@@ -87,7 +87,7 @@ fun Route.asignatura(
         }
 
 
-        //Detele units by id
+        //Detele asignaturas by id
         delete("/{idAsignatura}"){
             val idAsignatura = call.parameters["idAsignatura"] ?: return@delete call.respondText(
                 "NO ID",
@@ -105,5 +105,41 @@ fun Route.asignatura(
                 call.respondText("${e.message}")
             }
         }
+
+        put("/{idAsignatura}"){
+            val parameter = call.receive<Parameters>()
+
+            val idAsignatura = call.parameters["idAsignatura"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val nombreAsignatura = parameter["nombreAsignatura"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+            val descAsignatura = parameter["descAsignatura"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val idProfesor = parameter["idProfesor"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val result = db.update(idAsignatura, nombreAsignatura, descAsignatura, idProfesor)
+                if (result == 1){
+                    call.respondText("$idAsignatura updated sucessfully...")
+                }else{
+                    call.respondText("$idAsignatura not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
     }
 }

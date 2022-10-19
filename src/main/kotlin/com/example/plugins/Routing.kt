@@ -1,8 +1,10 @@
 package com.example.plugins
 
 import com.example.data.asignatura.AsignaturaRepository
+import com.example.data.examen.ExamenRepository
 import com.example.data.profesor.ProfesorRepository
 import com.example.data.reactivo.ReactivoRepository
+import com.example.data.respuesta.RespuestaRepository
 import com.example.data.tema.responseRepository
 import com.example.data.unidad.UnidadRepository
 import com.example.repository.DatabaseFactory
@@ -22,6 +24,8 @@ fun Application.configureRouting() {
     val temaRepository = responseRepository()
     val profesorRepository = ProfesorRepository()
     val reactivoRepository = ReactivoRepository()
+    val respuestaRepository = RespuestaRepository()
+    val ExamenRepository = ExamenRepository()
 
     routing {
         asignatura(db)
@@ -29,6 +33,8 @@ fun Application.configureRouting() {
         tema(temaRepository)
         profesor(profesorRepository)
         reactivo(reactivoRepository)
+        respuesta(respuestaRepository)
+        examen(ExamenRepository)
 
     }
 
