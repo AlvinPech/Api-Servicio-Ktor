@@ -105,5 +105,42 @@ fun Route.respuesta(
                 call.respondText("${e.message}")
             }
         }
+
+        put("/{idRespuesta}"){
+            val parameter = call.receive<Parameters>()
+
+            val idRespuesta = call.parameters["idRespuesta"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val respuestaString = parameter["respuestaString"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val esCorrecto = parameter["esCorrecto"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val idsigreactivo = parameter["idsigreactivo"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val result = db.update(idRespuesta, respuestaString, esCorrecto.toBoolean(), idsigreactivo)
+                if (result == 1){
+                    call.respondText("$idRespuesta updated sucessfully...")
+                }else{
+                    call.respondText("$idRespuesta not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
     }
 }

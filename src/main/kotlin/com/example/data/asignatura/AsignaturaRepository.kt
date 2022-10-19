@@ -46,13 +46,6 @@ class AsignaturaRepository : AsignaturaDao {
                 }
         }
 
-    /*List<Asignatura> =
-        DatabaseFactory.dbQuery {
-            AsignaturaTable.selectAll().mapNotNull {
-                rowToAsig(it)
-            }
-        }*/
-
     override suspend fun deleteById(idAsignatura: String): Int =
         DatabaseFactory.dbQuery {
             AsignaturaTable.deleteWhere { AsignaturaTable.idAsignatura.eq(idAsignatura) }
@@ -61,7 +54,6 @@ class AsignaturaRepository : AsignaturaDao {
     override suspend fun update(idAsignatura: String, nombreAsignatura:String, descAsignatura: String, idProfesor: String): Int =
         DatabaseFactory.dbQuery {
             AsignaturaTable.update({ AsignaturaTable.idAsignatura.eq(idAsignatura) }) { asignatura ->
-                asignatura[AsignaturaTable.idAsignatura] = idAsignatura
                 asignatura[AsignaturaTable.nombreAsignatura] = nombreAsignatura
                 asignatura[AsignaturaTable.descAsignatura] = descAsignatura
                 asignatura[AsignaturaTable.idProfesor] = idProfesor

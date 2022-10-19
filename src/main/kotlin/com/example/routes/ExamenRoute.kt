@@ -112,6 +112,47 @@ fun Route.examen(
         }
 
 
+        put("/{idExamen}"){
+            val parameter = call.receive<Parameters>()
+
+            val idExamen = call.parameters["idExamen"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val nombre = parameter["nombre"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val descripcion = parameter["descripcion"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val idAsignatura = parameter["idAsignatura"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+            val tiempo = parameter["tiempo"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val result = db.update(idExamen, nombre, descripcion, idAsignatura, tiempo.toInt())
+                if (result == 1){
+                    call.respondText("$idExamen updated sucessfully...")
+                }else{
+                    call.respondText("$idExamen not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
+
         route("/asigReactivo"){
 
             post{

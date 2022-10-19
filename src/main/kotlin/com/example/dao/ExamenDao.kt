@@ -31,6 +31,10 @@ interface ExamenDao {
     suspend fun deleteById(idExamen: String):Int
 
     suspend fun update(
-
+        idExamen: String,
+        nombre:String,
+        descripcion: String,
+        idAsignatura: String,
+        tiempo: Int
     ):Int
 }

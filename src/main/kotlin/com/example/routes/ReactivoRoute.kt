@@ -127,6 +127,41 @@ fun Route.reactivo(
             }
         }
 
+        put("/{idReactivo}"){
+            val parameter = call.receive<Parameters>()
+
+            val idReactivo = call.parameters["idReactivo"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val pregunta = parameter["pregunta"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+            val dificultad = parameter["dificultad"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val requiereProcedimiento = parameter["requiereProcedimiento"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val result = db.update(idReactivo, pregunta, dificultad.toInt(), requiereProcedimiento.toBoolean())
+                if (result == 1){
+                    call.respondText("$idReactivo updated sucessfully...")
+                }else{
+                    call.respondText("$idReactivo not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
 
 
     }

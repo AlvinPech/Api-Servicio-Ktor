@@ -20,4 +20,11 @@ interface UnitDao {
     suspend fun getUnitsByAsignaturaId(idAsignatura:String): List<Unidad>?
 
     suspend fun deleteById(idUnidad: String):Int
+
+    suspend fun update(
+        idUnidad: String,
+        nombreUnidad:String,
+        descUnidad: String,
+        idAsignatura: String
+    ):Int
 }

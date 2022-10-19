@@ -104,5 +104,41 @@ fun Route.tema(
                 call.respondText("${e.message}")
             }
         }
+
+        put("/{idTema}"){
+            val parameter = call.receive<Parameters>()
+
+            val idTema = call.parameters["idTema"] ?: return@put call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val nombreTema = parameter["nombreTema"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+            val descTema = parameter["descTema"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val idUnidad = parameter["idUnidad"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            try {
+                val result = db.update(idTema, nombreTema, descTema, idUnidad)
+                if (result == 1){
+                    call.respondText("$idTema updated sucessfully...")
+                }else{
+                    call.respondText("$idTema not found...")
+                }
+
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
     }
 }

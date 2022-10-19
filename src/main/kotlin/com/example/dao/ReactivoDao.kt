@@ -24,7 +24,7 @@ interface ReactivoDao {
         idUnidad: String
     ): Int*/
 
-    suspend fun getAllReactivos():List<Reactivo>?
+    suspend fun getAllReactivos():List<ReactivoResponse>?
 
     suspend fun getReactivosByUnidadTemaId(idUnidad: String, idTema: String): List<ReactivoResponse>?
 
@@ -34,12 +34,10 @@ interface ReactivoDao {
 
     suspend fun getRespuestasByReactivoId(idReactivo:String): List<Respuesta>?
 
-    /*suspend fun update(
-        idProfesor: String,
-        correo:String,
-        nombre: String,
-        apellidoPaterno: String,
-        apellidoMaterno: String,
-        contrasenia: String
-    ):Int*/
+    suspend fun update(
+        idReactivo: String,
+        pregunta:String,
+        dificultad: Int,
+        requiereProcedimiento: Boolean
+    ):Int
 }
