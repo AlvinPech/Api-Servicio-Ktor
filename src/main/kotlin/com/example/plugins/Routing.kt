@@ -36,6 +36,12 @@ fun Application.configureRouting() {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.Authorization)
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Post)
     }
 
     install(XHttpMethodOverride)
