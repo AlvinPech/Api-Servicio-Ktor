@@ -9,6 +9,7 @@ plugins {
     application
     kotlin("jvm") version "1.7.10"
     id("io.ktor.plugin") version "2.1.1"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
 
 group = "com.example"
@@ -38,4 +39,9 @@ dependencies {
     implementation ("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation ("org.postgresql:postgresql:$postgres_version")
     implementation ("com.zaxxer:HikariCP:$hikaricp_version")
+
+    implementation("io.ktor:ktor-server-cors:$ktor_version")
+
+    implementation("io.ktor:ktor-server-method-override:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 }
