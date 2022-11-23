@@ -134,7 +134,8 @@ class ExamenRepository : ExamenDao {
             idreactivo = row[ReactivoTable.idreactivo],
             pregunta = row[ReactivoTable.pregunta],
             dificultad = row[ReactivoTable.dificultad],
-            requiereProcedimiento = row[ReactivoTable.requiereProcedimiento]
+            requiereProcedimiento = row[ReactivoTable.requiereProcedimiento],
+            correcto = row[ReactivoTable.correcto]
         )
     }
 }

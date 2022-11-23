@@ -15,6 +15,7 @@ interface ReactivoDao {
         pregunta:String,
         dificultad: Int,
         requiereProcedimiento: Boolean,
+        correcto: Int
 
     ): Reactivo?
 
@@ -38,6 +39,7 @@ interface ReactivoDao {
         idReactivo: String,
         pregunta:String,
         dificultad: Int,
-        requiereProcedimiento: Boolean
+        requiereProcedimiento: Boolean,
+        correcto: Int
     ):Int
 }

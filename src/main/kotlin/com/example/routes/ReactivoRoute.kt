@@ -46,11 +46,16 @@ fun Route.reactivo(
                 status = HttpStatusCode.Unauthorized
             )
 
+            val correcto = parameter["correcto"] ?: return@post call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
 
             /*Rest of data fields*/
 
             try {
-                val asig = db.insertInReactivo(idTema, idUnidad, idReactivo, pregunta, dificultad.toInt(), requiereProcedimiento.toBoolean())
+                val asig = db.insertInReactivo(idTema, idUnidad, idReactivo, pregunta, dificultad.toInt(), requiereProcedimiento.toBoolean(), correcto.toInt())
 
                 asig?.idreactivo?.let {
                     call.respond(status = HttpStatusCode.OK,asig)
@@ -149,8 +154,13 @@ fun Route.reactivo(
                 status = HttpStatusCode.Unauthorized
             )
 
+            val correcto = parameter["correcto"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
             try {
-                val result = db.update(idReactivo, pregunta, dificultad.toInt(), requiereProcedimiento.toBoolean())
+                val result = db.update(idReactivo, pregunta, dificultad.toInt(), requiereProcedimiento.toBoolean(), correcto.toInt())
                 if (result == 1){
                     call.respondText("$idReactivo updated sucessfully...")
                 }else{
