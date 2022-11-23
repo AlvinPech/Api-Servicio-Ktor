@@ -162,7 +162,7 @@ class ReactivoRepository : ReactivoDao {
         return Respuesta(
             idrespuesta = row[RespuestaTable.idrespuesta],
             respuesta = row[RespuestaTable.respuesta],
-            esCorrecto = row[RespuestaTable.esCorrecto],
+            //esCorrecto = row[RespuestaTable.esCorrecto],
             idsigreactivo = row[RespuestaTable.idsigreactivo]
         )
     }
