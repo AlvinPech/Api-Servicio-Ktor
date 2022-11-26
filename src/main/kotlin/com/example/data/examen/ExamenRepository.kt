@@ -2,6 +2,7 @@ package com.example.data.examen
 
 import com.example.dao.AsignaturaDao
 import com.example.dao.ExamenDao
+import com.example.data.profesor.Profesor
 import com.example.data.reactivo.Reactivo
 import com.example.data.respuesta.Respuesta
 import com.example.repository.DatabaseFactory
@@ -52,21 +53,15 @@ class ExamenRepository : ExamenDao {
             }
         }
 
-    override suspend fun getExamenesById(idExamen: String): Examen? =
-        DatabaseFactory.dbQuery {
-            ReactivosdeexamenTable.join(ExamenTable, JoinType.INNER, additionalConstraint =
-            { ReactivosdeexamenTable.idexamen eq ExamenTable.idexamen})
-                .join(
-                    ReactivoTable, JoinType.INNER, additionalConstraint =
-                    { ReactivosdeexamenTable.idreactivo eq ReactivoTable.idreactivo})
-
-                .select { ExamenTable.idexamen.eq(idExamen) }
-                .map {
-                    runBlocking {
-                        rowToAsig(it)
-                    }
-                }.singleOrNull()
-        }
+    override suspend fun getExamenesById(idExamen: String): ExamenResponse? =
+            DatabaseFactory.dbQuery {
+                ExamenTable.select { ExamenTable.idexamen.eq(idExamen) }
+                    .map {
+                        runBlocking {
+                            rowToResponse(it)
+                        }
+                    }.singleOrNull()
+            }
 
     override suspend fun getReactivosByExamenId(idExamen: String): List<Reactivo> =
         DatabaseFactory.dbQuery {
