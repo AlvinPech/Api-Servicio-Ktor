@@ -63,6 +63,16 @@ class ExamenRepository : ExamenDao {
                     }.singleOrNull()
             }
 
+    override suspend fun getExamenesByAsignaturaId(idAsignatura: String): List<ExamenResponse> =
+        DatabaseFactory.dbQuery {
+            ExamenTable.select { ExamenTable.idasignatura.eq(idAsignatura) }
+                .mapNotNull{
+                    runBlocking {
+                        rowToResponse(it)
+                    }
+                }
+        }
+
     override suspend fun getReactivosByExamenId(idExamen: String): List<Reactivo> =
         DatabaseFactory.dbQuery {
             ReactivosdeexamenTable.join(ReactivoTable, JoinType.INNER, additionalConstraint =

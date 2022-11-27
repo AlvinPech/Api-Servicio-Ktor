@@ -91,6 +91,17 @@ fun Route.examen(
             }
         }
 
+        //Get reactivos by id
+        get("asignatura/{idAsignatura}") {
+
+            val idExamen = db.getExamenesByAsignaturaId(call.parameters["idAsignatura"]!!)
+            if (idExamen == null) {
+                call.respond(HttpStatusCode.NotFound)
+
+            } else {
+                call.respond(idExamen)
+            }
+        }
 
         //Detele reactivos by id
         delete("/{idExamen}"){
