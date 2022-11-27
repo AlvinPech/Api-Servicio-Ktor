@@ -46,11 +46,16 @@ fun Route.profesor(
                 status = HttpStatusCode.Unauthorized
             )
 
+            val esSuperUser = parameter["esSuperUser"] ?: return@post call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
 
             /*Rest of data fields*/
 
             try {
-                val asig = db.insert(idProfesor, correo, nombre, apellidoPaterno, apellidoMaterno, contrasenia)
+                val asig = db.insert(idProfesor, correo, nombre, apellidoPaterno, apellidoMaterno, contrasenia, esSuperUser.toBoolean())
 
                 asig?.idProfesor?.let {
                     call.respond(status = HttpStatusCode.OK,asig)
@@ -136,8 +141,13 @@ fun Route.profesor(
                 status = HttpStatusCode.Unauthorized
             )
 
+            val esSuperUser = parameter["esSuperUser"] ?: return@put call.respondText(
+                "MISSING FIELD",
+                status = HttpStatusCode.Unauthorized
+            )
+
             try {
-                val asig = db.update(idProfesor, correo, nombre, apellidoPaterno, apellidoMaterno, contrasenia)
+                val asig = db.update(idProfesor, correo, nombre, apellidoPaterno, apellidoMaterno, contrasenia, esSuperUser.toBoolean())
                 if (asig == 1){
                     call.respondText("$idProfesor updated sucessfully...")
                 }else{
