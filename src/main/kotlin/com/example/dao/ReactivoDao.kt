@@ -33,6 +33,8 @@ interface ReactivoDao {
 
     suspend fun deleteById(idReactivo: String):Int
 
+    suspend fun deleteReactivoFromExamen(idReactivo: String, idExamen: String): Int
+
     suspend fun getRespuestasByReactivoId(idReactivo:String): List<Respuesta>?
 
     suspend fun update(

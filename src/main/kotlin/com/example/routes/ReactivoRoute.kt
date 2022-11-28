@@ -132,6 +132,31 @@ fun Route.reactivo(
             }
         }
 
+
+        //Detele reactivos from Examen Asociation
+        delete("/{idReactivo}/examen/{idExamen}"){
+            val idReactivo = call.parameters["idReactivo"] ?: return@delete call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val idExamen = call.parameters["idExamen"] ?: return@delete call.respondText(
+                "NO ID",
+                status = HttpStatusCode.Unauthorized
+            )
+
+            val result = db.deleteReactivoFromExamen(idReactivo, idExamen)
+            try {
+                if (result == 1){
+                    call.respondText("$idReactivo is not part of the exam $idExamen anymore...")
+                }else{
+                    call.respondText("$idReactivo or $idExamen not found...")
+                }
+            }catch (e:Throwable){
+                call.respondText("${e.message}")
+            }
+        }
+
         put("/{idReactivo}"){
             val parameter = call.receive<Parameters>()
 

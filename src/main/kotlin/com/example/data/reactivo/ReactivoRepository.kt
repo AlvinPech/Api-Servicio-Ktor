@@ -4,6 +4,7 @@ import com.example.dao.AsignaturaDao
 import com.example.dao.ReactivoDao
 import com.example.data.respuesta.Respuesta
 import com.example.repository.DatabaseFactory
+import com.example.repository.relationTables.ReactivosdeexamenTable
 import com.example.repository.relationTables.RespuestasdereactivoTable
 import com.example.repository.relationTables.TemasdereactivoTable
 import com.example.repository.tables.*
@@ -110,6 +111,13 @@ class ReactivoRepository : ReactivoDao {
         DatabaseFactory.dbQuery {
             ReactivoTable.deleteWhere { ReactivoTable.idreactivo.eq(idReactivo) }
         }
+
+    //delete reactivo from examen asociation NOT from the Reactivos Table
+    override suspend fun deleteReactivoFromExamen(idReactivo: String, idExamen: String): Int =
+        DatabaseFactory.dbQuery {
+            ReactivosdeexamenTable.deleteWhere { ReactivosdeexamenTable.idreactivo.eq(idReactivo) and (ReactivosdeexamenTable.idexamen.eq(idExamen)) }
+        }
+
 
     override suspend fun getRespuestasByReactivoId(idReactivo: String): List<Respuesta> =
         DatabaseFactory.dbQuery {
