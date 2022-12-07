@@ -6,7 +6,8 @@ data class Reactivo(
     val idreactivo: String,
     val pregunta:String,
     val dificultad: Int,
-    val requiereProcedimiento: Boolean
+    val requiereProcedimiento: Boolean,
+    val correcto: Int
     )
 
 data class temasdereactivo(
@@ -24,6 +25,7 @@ data class ReactivoResponse(
     val pregunta:String,
     val dificultad: Int,
     val requiereProcedimiento: Boolean,
+    val correcto: Int,
     val listOfRespuestas: List<Respuesta> = listOf()
 )
 

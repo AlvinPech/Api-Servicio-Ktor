@@ -10,7 +10,7 @@ interface RespuestaDao {
         orden: Int,
         idRespuesta:String,
         respuestaString: String,
-        esCorrecto: Boolean,
+        //esCorrecto: Boolean,
         idsigreactivo: String
     ): Respuesta?
 
@@ -23,7 +23,7 @@ interface RespuestaDao {
     suspend fun update(
         idRespuesta:String,
         respuesta: String,
-        esCorrecto: Boolean,
+        //esCorrecto: Boolean,
         idsigreactivo: String
     ):Int
 

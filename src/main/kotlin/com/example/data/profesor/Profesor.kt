@@ -6,5 +6,6 @@ data class Profesor (
     val nombre: String,
     val apellidoPaterno: String,
     val apellidoMaterno: String,
-    val contrasenia: String
+    val contrasenia: String,
+    val esSuperUser: Boolean
 )

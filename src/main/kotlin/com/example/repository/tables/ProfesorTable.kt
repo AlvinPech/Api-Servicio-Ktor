@@ -10,6 +10,7 @@ object ProfesorTable : Table() {
     val apellidoPaterno:Column<String> = text("apellidopaterno")
     val apellidoMaterno:Column<String> = text("apellidomaterno")
     val contrasenia:Column<String> = text("contrasenia")
+    val esSuperUser:Column<Boolean> = bool("superuser")
 
     override val primaryKey: PrimaryKey = PrimaryKey(idProfesor)
 }

@@ -11,7 +11,8 @@ interface ProfesorDao {
         nombre: String,
         apellidoPaterno: String,
         apellidoMaterno: String,
-        contrasenia: String
+        contrasenia: String,
+        esSuperUser: Boolean
 
     ): Profesor?
 
@@ -27,6 +28,7 @@ interface ProfesorDao {
         nombre: String,
         apellidoPaterno: String,
         apellidoMaterno: String,
-        contrasenia: String
+        contrasenia: String,
+        esSuperUser: Boolean
     ):Int
 }
