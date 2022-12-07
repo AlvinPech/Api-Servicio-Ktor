@@ -4,6 +4,7 @@ import com.example.dao.AsignaturaDao
 import com.example.dao.ReactivoDao
 import com.example.data.respuesta.Respuesta
 import com.example.repository.DatabaseFactory
+import com.example.repository.relationTables.ReactivosdeexamenTable
 import com.example.repository.relationTables.RespuestasdereactivoTable
 import com.example.repository.relationTables.TemasdereactivoTable
 import com.example.repository.tables.*
@@ -19,7 +20,7 @@ class ReactivoRepository : ReactivoDao {
 
 
 
-    override suspend fun insertInReactivo(idTema:String, idUnidad:String, idReactivo: String, pregunta: String, dificultad: Int, requiereProcedimiento: Boolean): Reactivo? {
+    override suspend fun insertInReactivo(idTema:String, idUnidad:String, idReactivo: String, pregunta: String, dificultad: Int, requiereProcedimiento: Boolean, correcto: Int): Reactivo? {
 
         var statement:InsertStatement<Number>? = null
         DatabaseFactory.dbQuery {
@@ -28,6 +29,7 @@ class ReactivoRepository : ReactivoDao {
                 reactivo[ReactivoTable.pregunta] = pregunta
                 reactivo[ReactivoTable.dificultad] = dificultad
                 reactivo[ReactivoTable.requiereProcedimiento] = requiereProcedimiento
+                reactivo[ReactivoTable.correcto] = correcto
 
                 //insert rest data
             }
@@ -110,6 +112,13 @@ class ReactivoRepository : ReactivoDao {
             ReactivoTable.deleteWhere { ReactivoTable.idreactivo.eq(idReactivo) }
         }
 
+    //delete reactivo from examen asociation NOT from the Reactivos Table
+    override suspend fun deleteReactivoFromExamen(idReactivo: String, idExamen: String): Int =
+        DatabaseFactory.dbQuery {
+            ReactivosdeexamenTable.deleteWhere { ReactivosdeexamenTable.idreactivo.eq(idReactivo) and (ReactivosdeexamenTable.idexamen.eq(idExamen)) }
+        }
+
+
     override suspend fun getRespuestasByReactivoId(idReactivo: String): List<Respuesta> =
         DatabaseFactory.dbQuery {
             RespuestasdereactivoTable.join(RespuestaTable, JoinType.INNER, additionalConstraint =
@@ -121,12 +130,13 @@ class ReactivoRepository : ReactivoDao {
             }
         }
 
-    override suspend fun update(idReactivo: String, pregunta:String, dificultad: Int, requiereProcedimiento: Boolean, ): Int =
+    override suspend fun update(idReactivo: String, pregunta:String, dificultad: Int, requiereProcedimiento: Boolean, correcto: Int): Int =
             DatabaseFactory.dbQuery {
                 ReactivoTable.update({ ReactivoTable.idreactivo.eq(idReactivo) }) { reactivo ->
                     reactivo[ReactivoTable.pregunta] = pregunta
                     reactivo[ReactivoTable.dificultad] = dificultad
                     reactivo[ReactivoTable.requiereProcedimiento] = requiereProcedimiento
+                    reactivo[ReactivoTable.correcto] = correcto
                 }
             }
 
@@ -137,7 +147,8 @@ class ReactivoRepository : ReactivoDao {
             idreactivo = row[ReactivoTable.idreactivo],
             pregunta = row[ReactivoTable.pregunta],
             dificultad = row[ReactivoTable.dificultad],
-            requiereProcedimiento = row[ReactivoTable.requiereProcedimiento]
+            requiereProcedimiento = row[ReactivoTable.requiereProcedimiento],
+            correcto = row[ReactivoTable.correcto]
         )
     }
 
@@ -153,6 +164,7 @@ class ReactivoRepository : ReactivoDao {
             pregunta = row[ReactivoTable.pregunta],
             dificultad = row[ReactivoTable.dificultad],
             requiereProcedimiento = row[ReactivoTable.requiereProcedimiento],
+            correcto = row[ReactivoTable.correcto],
             listOfRespuestas = getRespuestasByReactivoId(row[ReactivoTable.idreactivo])
         )
     }
@@ -162,7 +174,7 @@ class ReactivoRepository : ReactivoDao {
         return Respuesta(
             idrespuesta = row[RespuestaTable.idrespuesta],
             respuesta = row[RespuestaTable.respuesta],
-            esCorrecto = row[RespuestaTable.esCorrecto],
+            //esCorrecto = row[RespuestaTable.esCorrecto],
             idsigreactivo = row[RespuestaTable.idsigreactivo]
         )
     }

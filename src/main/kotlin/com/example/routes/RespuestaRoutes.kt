@@ -38,10 +38,10 @@ fun Route.respuesta(
                 status = HttpStatusCode.Unauthorized
             )
 
-            val esCorrecto = parameter["esCorrecto"] ?: return@post call.respondText(
+            /*val esCorrecto = parameter["esCorrecto"] ?: return@post call.respondText(
                 "MISSING FIELD",
                 status = HttpStatusCode.Unauthorized
-            )
+            )*/
 
             val idsigreactivo = parameter["idsigreactivo"] ?: return@post call.respondText(
                 "MISSING FIELD",
@@ -52,7 +52,7 @@ fun Route.respuesta(
             /*Rest of data fields*/
 
             try {
-                val asig = db.insert(idReactivo, orden.toInt(), idRespuesta, respuestaString, esCorrecto.toBoolean(), idsigreactivo)
+                val asig = db.insert(idReactivo, orden.toInt(), idRespuesta, respuestaString, idsigreactivo)
 
                 asig?.idrespuesta?.let {
                     call.respond(status = HttpStatusCode.OK,asig)
@@ -119,10 +119,10 @@ fun Route.respuesta(
                 status = HttpStatusCode.Unauthorized
             )
 
-            val esCorrecto = parameter["esCorrecto"] ?: return@put call.respondText(
+            /*val esCorrecto = parameter["esCorrecto"] ?: return@put call.respondText(
                 "MISSING FIELD",
                 status = HttpStatusCode.Unauthorized
-            )
+            )*/
 
             val idsigreactivo = parameter["idsigreactivo"] ?: return@put call.respondText(
                 "MISSING FIELD",
@@ -130,7 +130,7 @@ fun Route.respuesta(
             )
 
             try {
-                val result = db.update(idRespuesta, respuestaString, esCorrecto.toBoolean(), idsigreactivo)
+                val result = db.update(idRespuesta, respuestaString, idsigreactivo)
                 if (result == 1){
                     call.respondText("$idRespuesta updated sucessfully...")
                 }else{

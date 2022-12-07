@@ -18,13 +18,13 @@ import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class RespuestaRepository : RespuestaDao {
 
-    override suspend fun insert(idReactivo: String, orden: Int, idRespuesta: String, respuestaString: String, esCorrecto: Boolean, idsigreactivo: String): Respuesta? {
+    override suspend fun insert(idReactivo: String, orden: Int, idRespuesta: String, respuestaString: String, idsigreactivo: String): Respuesta? {
         var statement:InsertStatement<Number>? = null
         DatabaseFactory.dbQuery {
             statement = RespuestaTable.insert { respuesta ->
                 respuesta[RespuestaTable.idrespuesta] = idRespuesta
                 respuesta[RespuestaTable.respuesta] = respuestaString
-                respuesta[RespuestaTable.esCorrecto] = esCorrecto
+                //respuesta[RespuestaTable.esCorrecto] = esCorrecto
                 respuesta[RespuestaTable.idsigreactivo] = idsigreactivo
             }
         }
@@ -61,11 +61,11 @@ class RespuestaRepository : RespuestaDao {
             RespuestaTable.deleteWhere { RespuestaTable.idrespuesta.eq(idRespuesta) }
         }
 
-    override suspend fun update(idRespuesta: String, respuestaString: String, esCorrecto: Boolean, idsigreactivo: String): Int =
+    override suspend fun update(idRespuesta: String, respuestaString: String, idsigreactivo: String): Int =
         DatabaseFactory.dbQuery {
             RespuestaTable.update({ RespuestaTable.idrespuesta.eq(idRespuesta) }) { respuesta ->
                 respuesta[RespuestaTable.respuesta] = respuestaString
-                respuesta[RespuestaTable.esCorrecto] = esCorrecto
+                //respuesta[RespuestaTable.esCorrecto] = esCorrecto
                 respuesta[RespuestaTable.idsigreactivo] = idsigreactivo
             }
         }
@@ -76,7 +76,7 @@ class RespuestaRepository : RespuestaDao {
         return Respuesta(
             idrespuesta = row[RespuestaTable.idrespuesta],
             respuesta = row[RespuestaTable.respuesta],
-            esCorrecto = row[RespuestaTable.esCorrecto],
+            //esCorrecto = row[RespuestaTable.esCorrecto],
             idsigreactivo = row[RespuestaTable.idsigreactivo]
         )
     }

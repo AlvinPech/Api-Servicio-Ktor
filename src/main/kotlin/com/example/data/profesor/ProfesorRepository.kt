@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
 class ProfesorRepository: ProfesorDao{
-    override suspend fun insert( idProfesor: String, correo: String, nombre: String, apellidoPaterno: String, apellidoMaterno: String, contrasenia: String): Profesor? {
+    override suspend fun insert( idProfesor: String, correo: String, nombre: String, apellidoPaterno: String, apellidoMaterno: String, contrasenia: String, esSuperUser: Boolean): Profesor? {
         var statement: InsertStatement<Number>? = null
         DatabaseFactory.dbQuery {
             statement = ProfesorTable.insert { profesor ->
@@ -19,6 +19,7 @@ class ProfesorRepository: ProfesorDao{
                 profesor[ProfesorTable.apellidoPaterno] = apellidoPaterno
                 profesor[ProfesorTable.apellidoMaterno] = apellidoMaterno
                 profesor[ProfesorTable.contrasenia] = contrasenia
+                profesor[ProfesorTable.esSuperUser] = esSuperUser
 
                 //insert rest data
             }
@@ -47,7 +48,7 @@ class ProfesorRepository: ProfesorDao{
             ProfesorTable.deleteWhere { ProfesorTable.idProfesor.eq(idProfesor) }
         }
 
-    override suspend fun update(idProfesor: String, correo: String, nombre: String, apellidoPaterno: String, apellidoMaterno: String, contrasenia: String): Int =
+    override suspend fun update(idProfesor: String, correo: String, nombre: String, apellidoPaterno: String, apellidoMaterno: String, contrasenia: String, esSuperUser: Boolean): Int =
         DatabaseFactory.dbQuery {
             ProfesorTable.update({ProfesorTable.idProfesor.eq(idProfesor)}) { profesor ->
                 profesor[ProfesorTable.correo] = correo
@@ -55,6 +56,7 @@ class ProfesorRepository: ProfesorDao{
                 profesor[ProfesorTable.apellidoPaterno] = apellidoPaterno
                 profesor[ProfesorTable.apellidoMaterno] = apellidoMaterno
                 profesor[ProfesorTable.contrasenia] = contrasenia
+                profesor[ProfesorTable.esSuperUser] = esSuperUser
             }
         }
 
@@ -68,7 +70,8 @@ class ProfesorRepository: ProfesorDao{
             nombre = row[ProfesorTable.nombre],
             apellidoPaterno = row[ProfesorTable.apellidoPaterno],
             apellidoMaterno = row[ProfesorTable.apellidoMaterno],
-            contrasenia = row[ProfesorTable.contrasenia]
+            contrasenia = row[ProfesorTable.contrasenia],
+            esSuperUser = row[ProfesorTable.esSuperUser]
 
         )
     }

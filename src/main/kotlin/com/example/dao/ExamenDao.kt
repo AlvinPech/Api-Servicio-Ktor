@@ -24,7 +24,9 @@ interface ExamenDao {
 
     suspend fun getAllExamenes():List<ExamenResponse>?
 
-    suspend fun getExamenesById(idExamen:String): Examen?
+    suspend fun getExamenesById(idExamen:String): ExamenResponse?
+
+    suspend fun getExamenesByAsignaturaId(idAsignatura: String): List<ExamenResponse>?
 
     suspend fun getReactivosByExamenId(idExamen:String): List<Reactivo>?
 

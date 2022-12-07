@@ -9,6 +9,7 @@ object ReactivoTable : Table() {
     val pregunta:Column<String> = text("pregunta")
     val dificultad: Column<Int> = integer("dificultad")
     val requiereProcedimiento: Column<Boolean> = bool("requiereProcedimiento")
+    val correcto: Column<Int> = integer("correcto")
 
     override val primaryKey: PrimaryKey = PrimaryKey(idreactivo)
 }

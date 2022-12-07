@@ -12,7 +12,12 @@ import com.example.routes.*
 
 import io.ktor.server.routing.*
 import io.ktor.http.*
+import io.ktor.serialization.gson.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.plugins.methodoverride.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.request.*
 
@@ -27,6 +32,22 @@ fun Application.configureRouting() {
     val respuestaRepository = RespuestaRepository()
     val ExamenRepository = ExamenRepository()
 
+    install(CORS) {
+        anyHost()
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
+        allowMethod(HttpMethod.Options)
+        allowMethod(HttpMethod.Put)
+        allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Delete)
+        allowMethod(HttpMethod.Get)
+        allowMethod(HttpMethod.Post)
+    }
+
+    install(XHttpMethodOverride)
+
+
+
     routing {
         asignatura(db)
         unidad(unidadRepository)
@@ -37,6 +58,8 @@ fun Application.configureRouting() {
         examen(ExamenRepository)
 
     }
+
+
 
     //const val API_VERSION = "v1/"
 
